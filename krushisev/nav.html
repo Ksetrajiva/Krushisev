@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Navdiv</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section id="header">
+        <a href=""><img src="img/logo.png" class="logo" alt="logo" width="60" height="60"></a>
+        <div>
+            <ul id="navbar">
+                <li><a class="active" href="index.html" target="_parent">Home</a></li>
+                <li><a href="login.html" target="_parent">Register</a></li>
+                <li><a href="about.html" target="_parent">About</a></li>
+                <li><a href="contact.html" target="_parent">Contact</a></li>
+                <li class="cart-icon"><a href="login.html" target="_parent"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
+                <li class="account-icon"><a href="login.html" target="_parent"><i class="fa fa-user-circle" aria-hidden="true"></i></a></li>
+                <a href="#" id="close"><i class="fa fa-times" aria-hidden="true"></i></a>
+            </ul>
+        </div>
+        <div id="mobile">
+            <a href="login.html"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+            <i id="bar" class="fa fa-ellipsis-v" aria-hidden="true"></i>
+        </div>
+    </section>
+
+    <script>
+        // Mobile menu toggle
+        const bar = document.getElementById('bar');
+        const navbar = document.getElementById('navbar');
+        const close = document.getElementById('close');
+        
+        bar.addEventListener('click', () => {
+            navbar.classList.toggle('active');
+        });
+        
+        close.addEventListener('click', () => {
+            navbar.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
