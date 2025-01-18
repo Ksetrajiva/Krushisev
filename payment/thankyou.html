@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Your Order</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #e3e6f3;
+            padding: 25px;
+        }
+
+        .success-card {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+        }
+
+        .success-icon::after {
+            content: '✓';
+            font-size: 40px;
+            color: white;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .order-details {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .order-details p {
+            margin: 10px 0;
+            color: #666;
+        }
+
+        .order-details strong {
+            color: #333;
+            display: inline-block;
+            width: 150px;
+        }
+
+        .status-tracker {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .status-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .step-icon {
+            width: 30px;
+            height: 30px;
+            background: #8175d3;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            max-width: 80px;
+        }
+
+        .status-line {
+            position: absolute;
+            top: 15px;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background: #8175d3;
+            z-index: 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #8175d3;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background: #6a5acd;
+        }
+
+        .message {
+            color: #666;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-card">
+            <div class="success-icon"></div>
+            <h1>Thank You for Your Order!</h1>
+            <p class="message">Your payment has been processed successfully.<br>We'll send you a confirmation email shortly.</p>
+            
+            <div class="order-details">
+                <p><strong>Order Number:</strong> <span id="orderNumber">ORD-2024-0001</span></p>
+                <p><strong>Payment Status:</strong> <span style="color: #4CAF50;">Successful</span></p>
+                <p><strong>Amount Paid:</strong> ₹<span id="amountPaid">5000</span></p>
+                <p><strong>Payment Method:</strong> Credit Card</p>
+            </div>
+
+            <div class="status-tracker">
+                <div class="status-line"></div>
+                <div class="status-step">
+                    <div class="step-icon">✓</div>
+                    <div class="step-label">Order Confirmed</div>
+                </div>
+                <div class="status-step">
+                    <div class="step-icon">2</div>
+                    <div class="step-label">Processing</div>
+                </div>
+                <div class="status-step">
+                    <div class="step-icon">3</div>
+                    <div class="step-label">Out for Delivery</div>
+                </div>
+                <div class="status-step">
+                    <div class="step-icon">4</div>
+                    <div class="step-label">Delivered</div>
+                </div>
+            </div>
+
+            <p class="message">
+                Expected Delivery Date: <strong><span id="deliveryDate">January 22, 2024</span></strong><br>
+                You will receive updates about your order via email.
+            </p>
+
+            <a href="../home.html" class="btn">Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        // You can add JavaScript to update the order details dynamically
+        // For example:
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generate random order number
+            const orderNum = 'ORD-' + Math.floor(Math.random() * 10000);
+            document.getElementById('orderNumber').textContent = orderNum;
+            
+            // Set delivery date (7 days from now)
+            const deliveryDate = new Date();
+            deliveryDate.setDate(deliveryDate.getDate() + 7);
+            document.getElementById('deliveryDate').textContent = deliveryDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        });
+    </script>
+</body>
+</html>

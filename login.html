@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="navdiv">
+        <iframe src="nav.html" nav></iframe>
+    </div>
+
+    <section class="account-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    <div class="form-container">
+                        <div class="form-btn">
+                            <span onclick="login()">Sign in</span>
+                            <span onclick="register()">Sign Up</span>
+                            <hr id="Indicator">
+                        </div>
+
+                        <!-- Login Form -->
+                        <form id="LoginForm">
+                            <h3>Welcome Back!👋</h3>
+                            <br>
+                            <input type="email" id="login-email" placeholder="Email" required>
+                            <input type="password" id="login-password" placeholder="Password" required>
+                            <br>
+                            <a href="#" onclick="forgotPassword(event)">Forgot password?</a> <br>
+                            <button type="submit" class="btn">Login</button>
+                            <br>
+                            <a href="#" onclick="register(event)"><u>Don't have an account? Sign Up</u></a>
+                        </form>
+
+                        <!-- Registration Form -->
+                        <form id="RegForm">
+                            <h3>Create new account</h3>
+                            <br>
+                            <input type="text" id="register-username" placeholder="Username" required>
+                            <input type="email" id="register-email" placeholder="Email" required>
+                            <input type="password" id="register-password" placeholder="Password" required>
+                            <input type="tel" id="register-phone" placeholder="Phone Number" required pattern="[0-9]{10}">
+                            <input type="text" id="register-address" placeholder="Address" required>
+                            <button type="submit" class="btn">Create Account</button>
+                            <br>
+                            <a href="#" onclick="login(event)"><u>Already have an account? Sign in</u></a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footerdiv">
+        <iframe src="footer.html" footer></iframe>
+    </div>
+
+    <script>
+        var LoginForm = document.getElementById("LoginForm");
+        var RegForm = document.getElementById("RegForm");
+        var Indicator = document.getElementById("Indicator");
+
+        function register(event) {
+            if (event) event.preventDefault();
+            RegForm.style.transform = "translateX(0px)";
+            LoginForm.style.transform = "translateX(0px)";
+            Indicator.style.transform = "translateX(100px)";
+        }
+
+        function login(event) {
+            if (event) event.preventDefault();
+            RegForm.style.transform = "translateX(300px)";
+            LoginForm.style.transform = "translateX(300px)";
+            Indicator.style.transform = "translateX(0px)";
+        }
+
+        function forgotPassword(event) {
+            event.preventDefault();
+            alert("Forgot password functionality coming soon!");
+        }
+
+        // Handle Login form submission
+        LoginForm.onsubmit = function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            // Get all users from localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Find user with matching email and password
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                // Store current user
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                alert('Login successful!');
+                window.location.href = "profile.html";
+            } else {
+                alert('Invalid email or password!');
+            }
+        };
+
+        // Handle Register form submission
+        RegForm.onsubmit = function(event) {
+            event.preventDefault();
+
+            const newUser = {
+                name: document.getElementById('register-username').value,
+                email: document.getElementById('register-email').value,
+                password: document.getElementById('register-password').value,
+                phone: document.getElementById('register-phone').value,
+                address: document.getElementById('register-address').value
+            };
+
+            // Get existing users or initialize empty array
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // Check if email already exists
+            if (users.some(user => user.email === newUser.email)) {
+                alert('Email already registered! Please use a different email.');
+                return;
+            }
+
+            // Add new user to array
+            users.push(newUser);
+
+            // Save updated users array
+            localStorage.setItem('users', JSON.stringify(users));
+
+            // Set current user
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+
+            alert('Account created successfully!');
+            window.location.href = "profile.html";
+        };
+    </script>
+</body>
+</html>

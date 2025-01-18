@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>User Profile</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .profile-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .profile-header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-pic {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 20px;
+        }
+        
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .upload-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 0;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .profile-pic:hover .upload-overlay {
+            opacity: 1;
+        }
+        
+        .upload-btn {
+            color: white;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+        
+        .upload-btn i {
+            font-size: 20px;
+        }
+        
+        .upload-btn:hover {
+            color: #f0f0f0;
+        }
+
+        .profile-info h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .profile-info p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .profile-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .profile-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e3e6f3;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            background: #8175d3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #6a5acd;
+        }
+
+        .btn-secondary {
+            background: #666;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .order-list {
+            list-style: none;
+        }
+
+        .order-item {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .order-item h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .order-meta {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            color: white;
+        }
+
+        .status-delivered {
+            background: #28a745;
+        }
+
+        .status-processing {
+            background: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div id="navdiv">
+        <iframe src="nav2.html" nav></iframe>
+    </div>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-pic">
+                <img id="profile-image" src="img/user-placeholder.png" alt="🪧">
+                <div class="upload-overlay">
+                    <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                    <label for="image-upload" class="upload-btn">
+                        <i class="fa fa-camera"></i>
+                    </label>
+                </div>
+            </div>
+            <div class="profile-info">
+                <h1 id="username">Loading...</h1>
+                <p><i class="fa fa-envelope"></i> <span id="user-email">Loading...</span></p>
+                <p><i class="fa fa-phone"></i> <span id="user-phone">Loading...</span></p>
+                <p><i class="fa fa-map-marker"></i> <span id="user-address">Loading...</span></p>
+                <button class="btn" onclick="editProfile()">Edit Profile</button>
+                <button class="btn btn-danger" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <div class="profile-section">
+                <h2>Personal Information</h2>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="full-name" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="phone" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="address" disabled>
+                    </div>
+                    <button type="submit" class="btn" id="save-btn" style="display: none;">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="footerdiv">
+        <iframe src="footer.html" footer></iframe>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (!currentUser) {
+                alert('Please login to access your profile');
+                window.location.href = "login.html";
+                return;
+            }
+
+            // Populate profile data
+            document.getElementById('username').textContent = currentUser.name;
+            document.getElementById('user-email').textContent = currentUser.email;
+            document.getElementById('user-phone').textContent = currentUser.phone || "Not Provided";
+            document.getElementById('user-address').textContent = currentUser.address || "Not Provided";
+            
+            document.getElementById('full-name').value = currentUser.name;
+            document.getElementById('email').value = currentUser.email;
+            document.getElementById('phone').value = currentUser.phone || "";
+            document.getElementById('address').value = currentUser.address || "";
+        };
+
+        function editProfile() {
+            const inputs = document.querySelectorAll('#profile-form input');
+            inputs.forEach(input => {
+                if (input.id !== 'email') { // Prevent email editing
+                    input.removeAttribute('disabled');
+                }
+            });
+            document.getElementById('save-btn').style.display = 'block';
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = "login.html";
+        }
+
+        document.getElementById('profile-form').onsubmit = function(e) {
+            e.preventDefault();
+
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // Update user information
+            const updatedUser = {
+                ...currentUser,
+                name: document.getElementById('full-name').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value
+            };
+
+            // Update in users array
+            const userIndex = users.findIndex(u => u.email === currentUser.email);
+            if (userIndex !== -1) {
+                users[userIndex] = updatedUser;
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+
+                // Disable inputs and hide save button
+                const inputs = document.querySelectorAll('#profile-form input');
+                inputs.forEach(input => input.setAttribute('disabled', true));
+                document.getElementById('save-btn').style.display = 'none';
+
+                // Update display
+                document.getElementById('username').textContent = updatedUser.name;
+                document.getElementById('user-phone').textContent = updatedUser.phone;
+                document.getElementById('user-address').textContent = updatedUser.address;
+
+                alert('Profile updated successfully!');
+            }
+        };
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            
+            // Load saved profile image if it exists
+            if (currentUser && currentUser.profileImage) {
+                document.getElementById('profile-image').src = currentUser.profileImage;
+            }
+        
+            // Handle image upload
+            document.getElementById('image-upload').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Check file size (limit to 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('Image size should be less than 5MB');
+                        return;
+                    }
+        
+                    // Check file type
+                    if (!file.type.startsWith('image/')) {
+                        alert('Please upload an image file');
+                        return;
+                    }
+        
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imageData = event.target.result;
+                        
+                        // Update profile image display
+                        document.getElementById('profile-image').src = imageData;
+        
+                        // Save image data to localStorage
+                        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                        const users = JSON.parse(localStorage.getItem('users')) || [];
+        
+                        // Update current user
+                        currentUser.profileImage = imageData;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+                        // Update user in users array
+                        const userIndex = users.findIndex(u => u.email === currentUser.email);
+                        if (userIndex !== -1) {
+                            users[userIndex].profileImage = imageData;
+                            localStorage.setItem('users', JSON.stringify(users));
+                        }
+                    };
+        
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+        
+        // Update the existing window.onload function to include profile image
+        const existingOnload = window.onload;
+        window.onload = function() {
+            existingOnload(); // Call the existing onload function
+        
+            // Load profile image
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser && currentUser.profileImage) {
+                document.getElementById('profile-image').src = currentUser.profileImage;
+            }
+        };
+    </script>
+</body>
+</html>
